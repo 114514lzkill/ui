@@ -12,12 +12,12 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
 		Default = {
-			Main = Color3.fromRGB(34, 34, 34),
-			Second = Color3.fromRGB(45, 44, 45),
+			Main = Color3.fromRGB(25, 25, 25),
+			Second = Color3.fromRGB(32, 32, 32),
 			Stroke = Color3.fromRGB(60, 60, 60),
 			Divider = Color3.fromRGB(60, 60, 60),
-			Text = Color3.fromRGB(225, 191, 102),
-			TextDark = Color3.fromRGB(255, 255, 200)
+			Text = Color3.fromRGB(240, 240, 240),
+			TextDark = Color3.fromRGB(150, 150, 150)
 		}
 	},
 	SelectedTheme = "Default",
@@ -326,9 +326,9 @@ end)
 CreateElement("ScrollFrame", function(Color, Width)
 	local ScrollFrame = Create("ScrollingFrame", {
 		BackgroundTransparency = 1,
-		MidImage = "rbxassetid://7445543667",
-		BottomImage = "rbxassetid://7445543667",
-		TopImage = "rbxassetid://7445543667",
+		MidImage = "rbxassetid://",
+		BottomImage = "rbxassetid://",
+		TopImage = "rbxassetid://",
 		ScrollBarImageColor3 = Color,
 		BorderSizePixel = 0,
 		ScrollBarThickness = Width,
@@ -446,6 +446,21 @@ function OrionLib:MakeNotification(NotificationConfig)
 		NotificationFrame:Destroy()
 	end)
 end    
+
+function OrionLib:Init()
+	if OrionLib.SaveCfg then	
+		pcall(function()
+			if isfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt") then
+				LoadCfg(readfile(OrionLib.Folder .. "/" .. game.GameId .. ".txt"))
+				OrionLib:MakeNotification({
+					Name = "Configuration",
+					Content = "Auto-loaded configuration for the game " .. game.GameId .. ".",
+					Time = 5
+				})
+			end
+		end)		
+	end	
+end	
 
 function OrionLib:MakeWindow(WindowConfig)
 	local FirstTab = true
@@ -588,7 +603,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		Position = UDim2.new(0.5, -307, 0.5, -172),
 		Size = UDim2.new(0, 615, 0, 344),
 		ClipsDescendants = true,
-		Active = true,
+        Active = true,
 		Draggable = true
 	}), {
 		--SetProps(MakeElement("Image", "rbxassetid://3523728077"), {
@@ -636,8 +651,8 @@ function OrionLib:MakeWindow(WindowConfig)
 		MainWindow.Visible = false
 		UIHidden = true
 		OrionLib:MakeNotification({
-			Name = "ON你关闭了BS脚本",
-			Content = "点击左Shift重新打开界面",
+			Name = "界面关闭",
+			Content = "点击右Shift重新打开界面",
 			Time = 5
 		})
 		WindowConfig.CloseCallback()
